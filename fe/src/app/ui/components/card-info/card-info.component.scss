@@ -1,0 +1,29 @@
+.card {
+  font-size: 1.6rem;
+  padding: 1rem 1.5rem;
+  background-color: rgba(var(--color-primary), 0.15);
+  border-radius: 0.5rem;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 1rem;
+  .field-group {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1rem;
+    &:first-of-type {
+      .field {
+        display: none;
+      }
+      .value {
+        font-size: 3.6rem;
+        font-weight: 700;
+      }
+    }
+    .field {
+      font-weight: 700;
+    }
+    .value {
+      font-style: italic;
+    }
+  }
+}

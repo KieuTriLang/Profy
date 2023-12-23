@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: profy
+
+jwt:
+  secret-key: this is secret key
+  expired-after-minute:
+    #     7 days
+    access-token: 10080
+    #    7 days
+    refresh-token: 10080

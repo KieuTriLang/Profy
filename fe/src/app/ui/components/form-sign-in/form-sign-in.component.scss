@@ -1,0 +1,57 @@
+.sign-in {
+  padding: 2.5rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(var(--color-background));
+  border-radius: 0.5rem;
+  border: 2px solid rgba(var(--color-primary), 0.5);
+  z-index: 100;
+  font-size: 1.6rem;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 2.5rem;
+  .title {
+    font-size: 2.4rem;
+    text-align: center;
+  }
+  .form-group {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 2.5rem;
+    justify-content: space-between;
+    label {
+      font-size: 1.6rem;
+    }
+    input {
+      padding: 0.5rem 1rem;
+      border: 0.1rem solid rgba(var(--color-primary), 0.5);
+      border-radius: 0.5rem;
+      &:focus{
+        outline: 0.1rem solid rgba(var(--color-primary), 0.75);
+      }
+    }
+  }
+  button {
+    padding: 1rem;
+    border: 0.1rem solid rgba(var(--color-primary), 0.5);
+    border-radius: 0.5rem;
+    background-color: rgba(var(--color-primary), 0.25);
+    &:hover {
+      cursor: pointer;
+      background-color: rgba(var(--color-primary), 0.5);
+    }
+  }
+  .create-account {
+    text-align: center;
+    cursor: pointer;
+  }
+  .err-list{
+    display: flex;
+    flex-flow: column;
+    .error{
+      color: rgba(var(--color-danger), 1);
+    }
+  }
+}

@@ -1,0 +1,18 @@
+<div class="header">
+    <p class="logo">Profy</p>
+    @if (!(authService.authenticatedState$ | async)){
+        <div class="auth-action" >
+        <button (click)="openAuthForm('sign-in')">Sign in</button>
+        /
+        <button (click)="openAuthForm('sign-up')">Sign up</button>
+    </div>
+    }
+    @else {
+        <div class="info" >
+            <!-- <button >This is my name</button> -->
+            /
+            <button class="log-out-btn" (click)="logout()">Log out</button>
+        </div>
+    }   
+    
+</div>

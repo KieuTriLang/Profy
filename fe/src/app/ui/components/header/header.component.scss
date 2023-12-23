@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Whisper&display=swap');
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 1rem 2rem;
+    background-color: rgba(var(--color-primary),1);
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    .logo{        
+        font-size: 5rem;
+        font-family: 'Whisper', cursive;
+    }
+    .auth-action,.info{
+        display: flex;
+        flex-flow: row nowrap;
+        font-size: 1.6rem;
+        align-items: center;
+        gap: 1rem;
+        button{
+            color: var(--color-text);
+            padding: 1rem 2rem;
+            background-color: transparent;
+            border: none;
+            &:hover{
+                cursor: pointer;
+                text-decoration: underline;
+            }
+            &.log-out-btn{
+                font-weight: 700;
+            }
+        }
+        
+        
+    }
+}

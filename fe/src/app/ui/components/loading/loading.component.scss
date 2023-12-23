@@ -1,0 +1,24 @@
+.loading {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & .loader {
+      width: 4.5rem;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 3px solid rgba(var(--color-primary), 0.2);
+      border-top: transparent;
+      border-left: transparent;
+      animation: spin 1s linear infinite;
+    }
+  }
+  
+  @keyframes spin {
+    0% {
+      rotate: 0deg;
+    }
+    100% {
+      rotate: 360deg;
+    }
+  }

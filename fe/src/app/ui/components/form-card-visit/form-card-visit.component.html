@@ -1,0 +1,20 @@
+<form class="form-card" (submit)="submit()">
+  <p class="title">{{!isUpdateForm ?'Create new':'Update' }} card</p>
+  <div class="field-list" cdkDropList (cdkDropListDropped)="drop($event)">
+    @for (item of datas; track $index) {
+      <div class="form-group" cdkDrag cdkDragBoundary=".field-list">
+        <span cdkDragHandle>&#x21D5;</span>
+        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="datas[$index].fieldName" placeholder="Name">
+        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="datas[$index].value" placeholder="Johnson">
+        <span (click)="removeItem($index)">X</span>
+      </div>
+    }
+    
+  </div>
+  <div class="actions">
+    <button type="button" (click)="addField()">Add field</button>
+  <button type="button">{{!isUpdateForm?'Create':'Update'}}</button>
+  
+  </div>
+  
+</form>

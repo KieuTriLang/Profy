@@ -1,0 +1,13 @@
+<div class="card-detail">
+    @for (item of card.infos; track $index) {
+        <div class="field-group">
+            <div class="field">{{item[0]}}:</div>
+            <div class="value" [innerHTML]="item[1] | filterUrl"></div>
+        </div>
+    }
+    <div class="actions">
+        <button type="button" class="delete" (click)="delete()">Delete</button>
+        <button type="button" class="edit" (click)="openEditForm()">Edit</button>
+
+    </div>
+</div>

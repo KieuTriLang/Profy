@@ -1,0 +1,58 @@
+<app-header (openForm)="handleOpenForm($event)" (sendAlert)="handleAlert($event)"></app-header>
+<div class="container" (scroll)="handleScroll($event)">
+  <div class="btn">
+    @if (authService.authenticatedState$ |async) {
+    <input
+      type="text"
+      [formControl]="searchText"
+      placeholder="(Name) Johnson"
+    />
+    <button type="button" class="btn-add" (click)="handleOpenForm('card-form')">
+      Add
+    </button>
+    }
+  </div>
+  <div class="list-card">
+    @for (item of items; track $index) {
+    <app-card-info
+      [card]="item"
+      (click)="handleOpenForm('card-detail', item.id)"
+    ></app-card-info>
+    } @empty {
+    <div class="empty">Nothing !!</div>
+    }
+  </div>
+  @if (loading) {
+  <app-loading></app-loading>
+  }
+</div>
+<div class="overlay" [class.active]="isOpenedForm" (click)="closeForm()"></div>
+
+@switch (typeForm) { @case ("sign-in") {
+<app-form-sign-in
+  (openForm)="handleOpenForm($event)"
+  (sendAlert)="handleAlert($event)"
+></app-form-sign-in>
+} @case ("sign-up") {
+<app-form-sign-up
+  (openForm)="handleOpenForm($event)"
+  (sendAlert)="handleAlert($event)"
+></app-form-sign-up>
+} @case ("card-form") {
+<app-form-card-visit
+  (createdData)="handleCreateCard($event)"
+  (updatedData)="handleUpdateCard($event)"
+  (sendAlert)="handleAlert($event)"
+></app-form-card-visit>
+} @case ("card-detail") {
+<app-card-visit-detail
+  [card]="card"
+  (openForm)="handleOpenForm($event, card.id)"
+  (deleteCard)="handleDeleteCard($event)"
+  (sendAlert)="handleAlert($event)"
+></app-card-visit-detail>
+} @default { } }
+@if (alertData !=null) {
+
+  <app-alert [data]="alertData"></app-alert>
+}

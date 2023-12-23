@@ -1,0 +1,63 @@
+.card-detail{
+    padding: 2.5rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(var(--color-background));
+  border-radius: 0.5rem;
+  border: 2px solid rgba(var(--color-primary), 0.5);
+  z-index: 100;
+  font-size: 1.6rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  .field-group {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1rem;
+    &:first-of-type {
+        justify-content: center;
+        grid-column: span 2;
+      .field {
+        display: none;
+      }
+      .value {
+        font-size: 4.2rem;
+        font-weight: 700;
+      }
+    }
+    .field {
+      font-weight: 700;
+    }
+    .value {
+      font-style: italic;
+    }
+  }
+  .actions{
+    grid-column: span 2;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    button{
+        border-radius: .5rem;
+        padding: .75rem 1.5rem;
+        &.delete{
+            border: none;
+            background-color: rgba(var(--color-danger),.75);
+            &:hover{
+                background-color: rgba(var(--color-danger),1);
+                cursor: pointer;
+            }
+        }
+        &.edit{
+            border:none;
+            background-color: rgba(var(--color-primary), 0.5);
+            &:hover{
+                background-color: rgba(var(--color-primary),.75);
+                cursor: pointer;
+            }
+        }
+    }
+  }
+}

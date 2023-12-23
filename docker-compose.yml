@@ -1,0 +1,54 @@
+version: "3.7"
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: kieutrilang
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+      MONGO_INITDB_DATABASE: profydb
+    volumes:
+      - ./mongo_init.js:/docker-entrypoint-initdb.d/mongo_init.js:ro
+    networks:
+      - profy-network
+
+  profy-be:
+    container_name: profy-be
+    build:
+      context: .
+      dockerfile: DockerFileBe
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      MONGODB_HOST: mongodb
+      MONGODB_PORT: 27017
+      MONGODB_USERNAME: kieutrilang
+      MONGODB_PASSWORD: 123456
+      MONGODB_DATABASE: profydb
+      JWT_SECRET_KEY: ktl160602
+      JWT_ACCESS_EXPIRED_AFTER_MINUTE: 10080
+      JWT_REFRESH_EXPIRED_AFTER_MINUTE: 10080
+    depends_on:
+      - mongodb
+    networks:
+      - profy-network
+  profy-fe:
+    container_name: profy-fe
+    build:
+      context: .
+      dockerfile: DockerFileFe
+    ports:
+      - "4200:80"
+    restart: always
+    environment:
+      HOST_API: profy-be
+    networks:
+      - profy-network
+networks:
+  profy-network:
+    name: profy-network
+    driver: bridge

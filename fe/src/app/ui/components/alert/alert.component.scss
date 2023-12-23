@@ -1,0 +1,33 @@
+.alert {
+  position: fixed;
+  bottom: 7.5%;
+  left: 50%;
+  transform: translate(-50%,200%);
+  z-index: 1000;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  font-size: 1.6rem;
+  border: 0.25rem solid rgba(var(--color-alert), 1);
+  background-color: rgba(var(--color-background), 1);
+  color: rgba(var(--color-text), 1);
+  text-align: center;
+  &.danger {
+    --color-alert: var(--color-danger);
+  }
+  &.noti {
+    --color-alert: var(--color-primary);
+  }
+  &.active{
+    animation: upAndDown 7.5s cubic-bezier(1,-0.5,0,1.25);
+  }
+}
+
+@keyframes upAndDown {
+    0%,100%{
+        transform: translate(-50%,200%);
+    }
+    25%{
+        transform: translate(-50%,-50%);
+    }
+    
+}

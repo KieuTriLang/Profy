@@ -1,0 +1,33 @@
+<form (submit)="submit()" class="sign-in" [formGroup]="form">
+  <p class="title">Sign in</p>
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" formControlName="username"/>
+  </div>
+  @if (form.get('username')?.invalid && form.get('username')?.errors &&
+  (form.get('username')?.dirty || form.get('username')?.touched)) {
+  <div class="err-list">
+    <small class="error"> This field is required. </small>
+  </div>
+  }
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" formControlName="password"/>
+  </div>
+  @if (form.get('password')?.invalid && form.get('password')?.errors &&
+  (form.get('password')?.dirty || form.get('password')?.touched)) {
+  <div class="err-list">
+    @if (form.get('password')?.hasError('required')) {
+    <small class="error"> This field is required. </small>
+    } @if (form.get('password')?.hasError('minlength')) {
+    <small class="error">
+      The minimum length for this field is 8 characters.
+    </small>
+    }
+  </div>
+  }
+
+  <button>Access</button>
+  <p class="create-account" (click)="openAuthForm('sign-up')">Create account</p>
+</form>
