@@ -1,6 +1,7 @@
 package com.ktl.profyBe.card;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.annotation.Id;
@@ -23,7 +24,7 @@ public class Card {
 
     private String ownerId;
 
-    private Map<String, String> infos;
+    private List<Info> infos;
 
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;

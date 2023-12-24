@@ -25,6 +25,7 @@ export class CardVisitDetailComponent implements OnInit {
       next: res =>{
         this.deleteCard.emit(this.card.id);
         this.sendAlert.emit({type:'noti',message:'Delete successfully.'})
+        this.openForm.emit('');
       },
       error: err=>{
         this.sendAlert.emit({type:'danger',message:'Delete Fail.'})

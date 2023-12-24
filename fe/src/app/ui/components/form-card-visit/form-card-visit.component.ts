@@ -4,6 +4,7 @@ import { CardService } from '../../../services/card.service';
 import { Card } from '../../../interfaces/Card';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Alert } from '../../../interfaces/Alert';
+import { Info } from '../../../interfaces/Info';
 
 @Component({
   selector: 'app-form-card-visit',
@@ -16,6 +17,7 @@ export class FormCardVisitComponent implements OnInit {
 
   @Input() isUpdateForm : boolean = false;
   @Input() cardId!:string;
+  @Output() openForm = new EventEmitter<string>();
   @Output() createdData = new EventEmitter<Card>();
   @Output() updatedData = new EventEmitter<Card>();
   @Output() sendAlert = new EventEmitter<Alert>();
@@ -28,8 +30,8 @@ export class FormCardVisitComponent implements OnInit {
         this.cardService.get(this.cardId).subscribe({
           next: (res:Card) =>{
             this.datas = [];
-            for (const [key,value] of res.infos) {
-              this.datas = [...this.datas,{ fieldName: key, value: value }]
+            for (const item of res.infos) {
+              this.datas = [...this.datas,{ fieldName: item.fieldName, value: item.value }]
             }
           },
           error: (err) =>{
@@ -46,13 +48,15 @@ export class FormCardVisitComponent implements OnInit {
   }
 
   submit() {
-    const result = this.convertToMap(this.datas);
-    if(result.size > 0){
+    
+    if(this.isValidData(this.datas)){
+      const result = this.convertToList(this.datas);
       if(this.isUpdateForm){
         this.cardService.update(this.cardId,result).subscribe({
           next: (res:Card) =>{
             this.updatedData.emit(res);
             this.sendAlert.emit({type:'noti',message:'Update successfully.'})
+            this.openForm.emit('');
           },
           error: err =>{
             this.sendAlert.emit({type:'danger',message:'Update fail.'})
@@ -63,6 +67,7 @@ export class FormCardVisitComponent implements OnInit {
         next: (res:Card) =>{
             this.createdData.emit(res);
             this.sendAlert.emit({type:'noti',message:'Create successfully.'})
+            this.openForm.emit('')
         },
         error: (err) =>{
           this.sendAlert.emit({type:'noti',message:'Create fail.'})
@@ -73,14 +78,18 @@ export class FormCardVisitComponent implements OnInit {
     }
   }
 
-  convertToMap(inputs: any[]): Map<string, string> {
-    var result = new Map<string, string>();
+  convertToList(inputs: any[]): Info[] {
+    var result: Info[] = [];
     inputs.forEach((item) => {
       if (item.fieldName != '' && item.value != ''){
-        result.set(item.fieldName, item.value);
+        result = [...result,{fieldName: item.fieldName,value:item.value}]
       }
     });
     return result;
+  }
+  isValidData(input:any[]):boolean{
+    const result = input.filter(item => (item.fieldName != '' && item.value != ''));
+    return result.length > 0;
   }
 
   drop(event: CdkDragDrop<string[]>) {

@@ -86,20 +86,21 @@ export class AppComponent implements OnInit {
   }
 
   getCard(page: number) {
-    const params = new HttpParams();
-    params.set('page', page);
+    var params = new HttpParams().set('page', page);
     if (this.searchModal.fieldName != '' && this.searchModal.value != '') {
-      params.set('fieldName', this.searchModal.fieldName);
-      params.set('value', this.searchModal.value);
+      params = new HttpParams().set('page', page)
+      .set('fieldName', this.searchModal.fieldName)
+      .set('value', this.searchModal.value);
     }
     this.loading = true;
     this.cardService.getAll(params).subscribe({
       next: (res) => {
-        this.items = [...this.items, ...res.content];
-        this.totalPage = res.totalPages;
-        if (this.page < this.totalPage) {
-          this.page++;
-        }
+        this.items = [...this.items, ...res];
+        // this.items = [...this.items, ...res.content];
+        // this.totalPage = res.totalPages;
+        // if (this.page < this.totalPage) {
+        //   this.page++;
+        // }
         this.loading = false;
       },
       error: (err) => {

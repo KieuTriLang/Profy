@@ -43,7 +43,7 @@ export class FormSignInComponent implements OnInit{
           this.openAuthForm('');
         },
         error: (error) => {
-          this.sendAlert.emit({type:'danger',message:error?.message})
+          this.sendAlert.emit({type:'danger',message:"Sign in fail. Please check your username and password again."})
         },
       });
     }

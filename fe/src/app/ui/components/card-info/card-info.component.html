@@ -2,8 +2,8 @@
     @for (item of card.infos; track $index) {
         @if ($index < 5) {
             <div class="field-group">
-                <div class="field">{{item[0]}}:</div>
-                <div class="value" [innerHTML]="item[1] | filterUrl"></div>
+                <div class="field">{{item.fieldName}}:</div>
+                <div class="value" [innerHTML]="item.value| filterUrl"></div>
             </div>
         }
     }

@@ -29,7 +29,7 @@ services:
       MONGODB_USERNAME: kieutrilang
       MONGODB_PASSWORD: 123456
       MONGODB_DATABASE: profydb
-      JWT_SECRET_KEY: ktl160602
+      JWT_SECRET_KEY: kdfpyxydadoivrotibdbwdvtbxfwxxlynlyapxyeqdcvkndkbgnmhoqevfbnygktpkxzmlhcufcwupliegmzeoxtbzrklijshptywikywfgdlkhokntqywtdjdriafqhxmngzicgujjvhrcmojydiwwmuhkdblru
       JWT_ACCESS_EXPIRED_AFTER_MINUTE: 10080
       JWT_REFRESH_EXPIRED_AFTER_MINUTE: 10080
     depends_on:

@@ -1,5 +1,6 @@
 package com.ktl.profyBe.card;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,16 +29,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/api/card")
 @RequiredArgsConstructor
+@Slf4j
 public class CardController {
 
     private final CardService cardService;
     private final JwtService jwtService;
 
     @GetMapping("")
-    public ResponseEntity<Page<Card>> getAll(
+    public ResponseEntity<List<Card>> getAll(
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader,
-            @RequestParam(name = "key") String key,
-            @RequestParam(name = "value") String value,
+            @RequestParam(name = "fieldName",required = false,defaultValue = "") String fieldName,
+            @RequestParam(name = "value",required = false,defaultValue = "") String value,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "pageSize", defaultValue = "36") int pageSize) {
 
@@ -46,7 +48,13 @@ public class CardController {
         String token = authHeader.replace("Bearer ", "");
         String username = jwtService.extractUsername(token);
 
-        return ResponseEntity.ok(cardService.getAllOfUser(username, key, value, pageable));
+        if (fieldName.isEmpty()) {
+            fieldName = null;
+        }
+        if(value.isEmpty()){
+            value = null;
+        }
+        return ResponseEntity.ok(cardService.getAllOfUser(username, fieldName, value, pageable));
     }
 
     @GetMapping("/{cardId}")
@@ -64,7 +72,7 @@ public class CardController {
     @PostMapping("")
     public ResponseEntity<Card> createCard(
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader,
-            @RequestBody Map<String, String> data) {
+            @RequestBody List<Info> data) {
 
         String token = authHeader.replace("Bearer ", "");
         String username = jwtService.extractUsername(token);
@@ -76,7 +84,7 @@ public class CardController {
     public ResponseEntity<Card> updateCard(
             @PathVariable String cardId,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader,
-            @RequestBody Map<String, String> data) {
+            @RequestBody List<Info> data) {
 
         String token = authHeader.replace("Bearer ", "");
         String username = jwtService.extractUsername(token);

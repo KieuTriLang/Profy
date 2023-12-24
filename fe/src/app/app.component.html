@@ -2,11 +2,13 @@
 <div class="container" (scroll)="handleScroll($event)">
   <div class="btn">
     @if (authService.authenticatedState$ |async) {
-    <input
-      type="text"
-      [formControl]="searchText"
-      placeholder="(Name) Johnson"
-    />
+
+    <!-- // TODO hidden because server occur error: Cannot find withQuery -->
+<!--    <input-->
+<!--      type="text"-->
+<!--      [formControl]="searchText"-->
+<!--      placeholder="(Name) Johnson"-->
+<!--    />-->
     <button type="button" class="btn-add" (click)="handleOpenForm('card-form')">
       Add
     </button>
@@ -19,7 +21,12 @@
       (click)="handleOpenForm('card-detail', item.id)"
     ></app-card-info>
     } @empty {
-    <div class="empty">Nothing !!</div>
+      @if (authService.authenticatedState$ | async) {
+        <div class="empty">Nothing !!</div>
+      }
+      @else {
+        <div class="empty">This site help you save infomation !</div>
+      }
     }
   </div>
   @if (loading) {
@@ -43,6 +50,7 @@
   (createdData)="handleCreateCard($event)"
   (updatedData)="handleUpdateCard($event)"
   (sendAlert)="handleAlert($event)"
+  (openForm)="handleOpenForm($event)"
 ></app-form-card-visit>
 } @case ("card-detail") {
 <app-card-visit-detail

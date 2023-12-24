@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Info } from '../interfaces/Info';
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +19,12 @@ export class CardService {
   get(cardId:string):Observable<any>{
     return this.http.get(`${this.HOST_API}/api/card/${cardId}`);
   }
-  create(data : Map<string,string>):Observable<any>{
-    return this.http.post(`${this.HOST_API}/api/card`,{data});
+  create(data : Info[]):Observable<any>{
+    return this.http.post(`${this.HOST_API}/api/card`,data);
   }
 
-  update(cardId:string,data:Map<string,string>):Observable<any>{
-    return this.http.put(`${this.HOST_API}/api/card/${cardId}`,{data});
+  update(cardId:string,data:Info[]):Observable<any>{
+    return this.http.put(`${this.HOST_API}/api/card/${cardId}`,data);
   }
 
   delete(cardId:string):Observable<any>{

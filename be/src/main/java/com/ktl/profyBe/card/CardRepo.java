@@ -1,6 +1,7 @@
 package com.ktl.profyBe.card;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.springframework.data.domain.Page;
@@ -21,22 +22,36 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class CardRepo {
 
     private final MongoTemplate mongoTemplate;
 
-    public Page<Card> getAll(String ownerId, String key, String value, Pageable pageable) {
-        Criteria criteria = Criteria.where("ownerId").is(ownerId);
-        if (key != null && value != null) {
-            criteria.and("infos." + key).regex(value, "i");
-        }
-        Query query = new Query();
-        query.addCriteria(criteria);
-        query.with(Sort.by(Sort.Direction.DESC, "createdAt"));
-        query.with(pageable);
-        List<Card> cards = mongoTemplate.find(query, Card.class);
-        long count = mongoTemplate.count(query, Card.class);
-        return new PageImpl<>(cards, pageable, count);
+    public List<Card> getAll(String ownerId, String fieldName, String value, Pageable pageable) {
+        // TODO error: Cannot find with query
+//        if (fieldName != null && value != null) {
+//
+//            Query query = new Query()
+//                    .addCriteria(Criteria.where("ownerId").is(ownerId)
+//                            .and("infos")
+//                            .elemMatch(Criteria.where(fieldName)
+//                                    .regex(value, "i")))
+//                    .with(Sort.by(Sort.Direction.DESC, "createdAt"))
+//                    .with(pageable);
+//            List<Card> cards = mongoTemplate.find(query, Card.class);
+//            long count = mongoTemplate.count(query, Card.class);
+//            return new PageImpl<>(cards, pageable, count);
+//        }else{
+//            Query query = new Query()
+//                    .addCriteria(Criteria.where("ownerId").is(ownerId))
+//                    .with(Sort.by(Sort.Direction.DESC, "createdAt"))
+//                    .with(pageable);
+//            List<Card> cards = mongoTemplate.find(query, Card.class);
+//            long count = mongoTemplate.count(query, Card.class);
+//            return new PageImpl<>(cards, pageable, count);
+//        }
+
+        return mongoTemplate.find(new Query(Criteria.where("ownerId").is(ownerId)), Card.class);
     }
 
     public Optional<Card> findById(String cardId) {
@@ -48,7 +63,7 @@ public class CardRepo {
         return mongoTemplate.save(card);
     }
 
-    public Card update(String id, Map<String, String> info) {
+    public Card update(String id, List<Info> info) {
         Query query = new Query(Criteria.where("id").is(id));
         Update update = Update.update("infos", info);
         FindAndModifyOptions findAndModifyOptions = new FindAndModifyOptions().returnNew(true);
