@@ -75,6 +75,8 @@ export class FormCardVisitComponent implements OnInit {
       });
       }
       
+    }else{
+      this.sendAlert.emit({type:"danger",message:"Please check data again."});
     }
   }
 

@@ -79,8 +79,9 @@ export class AppComponent implements OnInit {
         } else {
           this.searchModal.fieldName = '';
         }
-        this.searchModal.value = valOfField;
+        this.searchModal.value = valOfField.trim();
         this.page = 1;
+        this.items = [];
         this.getCard(this.page);
       });
   }
@@ -95,12 +96,11 @@ export class AppComponent implements OnInit {
     this.loading = true;
     this.cardService.getAll(params).subscribe({
       next: (res) => {
-        this.items = [...this.items, ...res];
-        // this.items = [...this.items, ...res.content];
-        // this.totalPage = res.totalPages;
-        // if (this.page < this.totalPage) {
-        //   this.page++;
-        // }
+        this.items = [...this.items, ...res.content];
+        this.totalPage = res.totalPages;
+        if (this.page < this.totalPage) {
+          this.page++;
+        }
         this.loading = false;
       },
       error: (err) => {
@@ -115,6 +115,7 @@ export class AppComponent implements OnInit {
     }
     if (typeForm == '') {
       this.isOpenedForm = false;
+      this.card = null;
     } else {
       this.isOpenedForm = true;
     }
@@ -124,6 +125,7 @@ export class AppComponent implements OnInit {
   closeForm() {
     this.typeForm = '';
     this.isOpenedForm = false;
+    this.card = null;
   }
 
   handleDeleteCard(cardId: string) {
@@ -140,6 +142,7 @@ export class AppComponent implements OnInit {
         return i;
       }
     });
+    this.card = null;
   }
   handleScroll(e: any) {
     const scrollHeight = e.target.scrollHeight;

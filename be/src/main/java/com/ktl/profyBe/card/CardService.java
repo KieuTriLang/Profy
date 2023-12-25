@@ -1,5 +1,7 @@
 package com.ktl.profyBe.card;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -22,7 +24,7 @@ public class CardService {
     private final CardRepo cardRepo;
     private final UserRepo userRepo;
 
-    public List<Card> getAllOfUser(String username, String fieldName, String value, Pageable pageable) {
+    public Page<Card> getAllOfUser(String username, String fieldName, String value, Pageable pageable) {
 
         User user = userRepo.findByUsername(username).orElseThrow(() -> new RuntimeException("Not found user"));
 
@@ -47,6 +49,7 @@ public class CardService {
                 .id(UUID.randomUUID().toString())
                 .ownerId(user.getId())
                 .infos(data)
+                .createdAt(System.currentTimeMillis())
                 .build();
 
         return cardRepo.create(card);

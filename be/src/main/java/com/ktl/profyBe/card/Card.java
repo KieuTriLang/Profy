@@ -26,7 +26,6 @@ public class Card {
 
     private List<Info> infos;
 
-    private ZonedDateTime createdAt;
-    private ZonedDateTime updatedAt;
+    private long createdAt;
 
 }

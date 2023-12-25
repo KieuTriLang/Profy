@@ -8,6 +8,7 @@ RUN npm install
 
 COPY ./fe/ .
 
+
 RUN npm run build --prod
 
 FROM nginx:alpine

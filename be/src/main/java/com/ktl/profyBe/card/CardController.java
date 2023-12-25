@@ -36,18 +36,18 @@ public class CardController {
     private final JwtService jwtService;
 
     @GetMapping("")
-    public ResponseEntity<List<Card>> getAll(
+    public ResponseEntity<Page<Card>> getAll(
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader,
             @RequestParam(name = "fieldName",required = false,defaultValue = "") String fieldName,
             @RequestParam(name = "value",required = false,defaultValue = "") String value,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "pageSize", defaultValue = "36") int pageSize) {
 
-        Pageable pageable = PageRequest.of(page, pageSize);
+        Pageable pageable = PageRequest.of(page-1, pageSize);
 
         String token = authHeader.replace("Bearer ", "");
         String username = jwtService.extractUsername(token);
-
+        log.info(username);
         if (fieldName.isEmpty()) {
             fieldName = null;
         }
@@ -60,8 +60,7 @@ public class CardController {
     @GetMapping("/{cardId}")
     public ResponseEntity<Card> getCard(
             @PathVariable String cardId,
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader,
-            @RequestBody Map<String, String> data) {
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
 
         String token = authHeader.replace("Bearer ", "");
         String username = jwtService.extractUsername(token);

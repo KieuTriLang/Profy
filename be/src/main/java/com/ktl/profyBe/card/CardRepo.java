@@ -10,12 +10,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -27,31 +32,28 @@ public class CardRepo {
 
     private final MongoTemplate mongoTemplate;
 
-    public List<Card> getAll(String ownerId, String fieldName, String value, Pageable pageable) {
-        // TODO error: Cannot find with query
-//        if (fieldName != null && value != null) {
-//
-//            Query query = new Query()
-//                    .addCriteria(Criteria.where("ownerId").is(ownerId)
-//                            .and("infos")
-//                            .elemMatch(Criteria.where(fieldName)
-//                                    .regex(value, "i")))
-//                    .with(Sort.by(Sort.Direction.DESC, "createdAt"))
-//                    .with(pageable);
-//            List<Card> cards = mongoTemplate.find(query, Card.class);
-//            long count = mongoTemplate.count(query, Card.class);
-//            return new PageImpl<>(cards, pageable, count);
-//        }else{
-//            Query query = new Query()
-//                    .addCriteria(Criteria.where("ownerId").is(ownerId))
-//                    .with(Sort.by(Sort.Direction.DESC, "createdAt"))
-//                    .with(pageable);
-//            List<Card> cards = mongoTemplate.find(query, Card.class);
-//            long count = mongoTemplate.count(query, Card.class);
-//            return new PageImpl<>(cards, pageable, count);
-//        }
+    public Page<Card> getAll(String ownerId, String fieldName, String value, Pageable pageable) {
 
-        return mongoTemplate.find(new Query(Criteria.where("ownerId").is(ownerId)), Card.class);
+        Query query;
+        if (fieldName != null && value != null) {
+            query = new Query(Criteria.where("ownerId").is(ownerId)
+                    .and("infos")
+                    .elemMatch(Criteria.where("fieldName").is(fieldName)
+                            .and("value")
+                            .regex(value, "i")));
+        }else{
+            query = new Query()
+                    .addCriteria(Criteria.where("ownerId").is(ownerId));
+        }
+        log.info(String.valueOf(query));
+        query.with(Sort.by(Sort.Direction.DESC, "createdAt"));
+        query.with(pageable);
+        List<Card> cards = mongoTemplate.find(query, Card.class);
+        log.info(String.valueOf(query));
+        log.info(cards.toString());
+        long count = mongoTemplate.count(query, Card.class);
+        log.info(String.valueOf(count));
+        return new PageImpl<>(cards, pageable, count);
     }
 
     public Optional<Card> findById(String cardId) {
