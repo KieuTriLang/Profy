@@ -73,7 +73,8 @@ export class AppComponent implements OnInit {
       )
       .subscribe((value: string) => {
         const fieldName = new RegExp(/^\(([^)]+)\)/).exec(value);
-        const valOfField = value.replace(/^\([a-zA-Z]*\)/, '');
+        const valOfField = value.replace(/^\(([^)]+)\)/, '');
+        
         if (fieldName != null) {
           this.searchModal.fieldName = fieldName[1];
         } else {

@@ -37,7 +37,7 @@ export class FormSignInComponent implements OnInit{
 
       this.authService.signIn(username, password).subscribe({
         next: (res) => {
-          localStorage.setItem("prftoken",res["access_token"])
+          sessionStorage.setItem("prftoken",res["access_token"])
           this.authService.authenticatedState.next(true);
           this.sendAlert.emit({type:'noti',message:'Welcome back!!'})
           this.openAuthForm('');
